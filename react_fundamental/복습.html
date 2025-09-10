@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>props</title>
+</head>
+
+<body>
+
+    <div id="root1"></div>
+    <script type="text/babel">
+        const SojuComponent = () => {
+            const [inputValue, setInputValue] = React.useState('');
+            const [sojus, setSojus] = React.useState([]);
+            const handleClick = (e) => {
+                if (inputValue.trim() === '') {
+                    alert('다시 가온나')
+                    return;
+                }
+                setSojus([...sojus, inputValue]);
+                setInputValue('');
+            }
+            const handleDelete = idx => setSojus(sojus.filter((value, i) => i !== idx))
+            return (
+                <>
+                    <input
+                        type="text"
+                        value={inputValue}
+                        onChange={e => setInputValue(e.target.value)}
+                    />
+                    <button type="text" onClick={handleClick}>선택</button>
+                    <ul>
+                        {sojus.map((soju, i) => <li key={i}>{soju}<button onClick={() => handleDelete(i)}>삭제</button></li>)}
+                    </ul>
+                </>
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root1')).render(<SojuComponent />)
+    </script>
+
+    <div id="root2"></div>
+    <script type="text/babel">
+        const InputComponent = () => {
+            const [inputValue, setInputValue] = React.useState('')
+            const handleChange = e => setInputValue(e.target.value)
+            return (
+                <>
+                    <input
+                        type="text"
+                        value={inputValue}
+                        onChange={handleChange}
+                    />
+                    <h1>{inputValue}</h1>
+                </>
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root2')).render(<InputComponent />)
+    </script>
+
+    <div id="root3"></div>
+    <script type="text/babel">
+        const SelectComponent = () => {
+            const [selectValue, setSelectValue] = React.useState("")
+            return (
+                <>
+                    <select
+                        value={selectValue}
+                        onChange={e => { setSelectValue(e.target.value) }}>
+                        <option hidden vlaue="">선택</option>
+                        <option>진로</option>
+                        <option>참이슬</option>
+                        <option>처음처럼</option>
+                    </select>
+                    <h1>{selectValue}</h1>
+                </>
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root3')).render(<SelectComponent />)
+    </script>
+
+    <div id="root4"></div>
+    <script type="text/babel">
+        const UserComponent = () => {
+            const [user, setUser] = React.useState({
+                id: '',
+                pw: '',
+            });
+            const handleChange = (e) => {
+                setUser({
+                    ...user,
+                    [e.target.id]: e.target.value
+                })
+            }
+            const handleSubmit = (e) => {
+                if (user.id === '' || user.pw === '') {
+                    alert('돌아가거라')
+                    e.preventDefault()
+                    if(user.id === '') {
+                        document.getElementById('id').focus();
+                    } else {
+                        document.getElementById('pw').focus();
+                    }
+                    return;
+                }
+                alert(`id: ${user.id}, pw: ${user.pw}`)
+            }
+            return (
+                <form
+                    action="/Login"
+                    method="post"
+                    onSubmit={handleSubmit}
+                >
+                    <input
+                        type="text"
+                        id="id"
+                        placeholder="아이디"
+                        onChange={handleChange}
+                        value={user.id}
+                    />
+                    <br/>
+                    <input
+                        type="password"
+                        id="pw"
+                        placeholder="비빌번호"
+                        onChange={handleChange}
+                        value={user.pw}
+                    />
+                    <button type="submit">로그인</button>
+                </form>
+            )
+        }
+        ReactDOM.createRoot(document.getElementById('root4')).render(<UserComponent />)
+    </script>
+
+
+</body>
+
+</html>
