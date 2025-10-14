@@ -39,5 +39,42 @@
       - 의존성 배열에 특정 값을 넣으면 그 값이 변경될 때만 callback 함수가 생성됩니다.
 -->
 
+<div id="root1"></div>
+<script type="text/babel">
+
+  function UseCallbackCompe() {
+
+  const { useSTate, useEffect, useCallback } = React;  // React는 객체이기 때문에 사용 하고 싶은것들을 구조분해 할당을 통해 따로 빼서 사용 가능
+
+  // state
+  const [number, setNumber] = useState(0);  // printNumber 함수에 영향을 미치는 함수
+  const [text, setText] = useState('');  // printNumber와 상관이 없는 state
+  
+  // 함수
+  // - 컴포넌트 내부에서 선언한 객체는 컴포넌트가 리렌더링 될 때마다 항상 재할당 된다.
+  // (함수 자체는 그대로이지만, 함수의 참조값이 바뀌기 때문)
+
+  // 리렌더링시 매번 재할당되는 함수
+  // const printNumber = () => console.log(number);
+
+  // 함수를 캐싱해 두는 useCallback()을 이용한 함수
+  const printNumber = useCallback(() => {
+    console.log(number);
+  }, [number]);  // number가 변하는 경우 캐싱해 둔 함수를 사용하지 않고, useCallback()이 가진 함수를 반환 한다.
+
+  // useEffect
+  useEffect(() => {printNumber();}, [printNumber]);
+
+  //return
+  return (
+    <>
+      <input type="number" value={number} onChange={e => setNumber(Number(e.terget.value))}/>
+      <br/>
+      <input type="text" value={text} onChange={e => setText(e.target.value)}/>
+    </>
+  )
+}
+ReactDOM.createRoot(document.getElementById('root1')).render(<UseCallbackCompe />)
+</script>
 </body>
 </html>
